@@ -3,7 +3,7 @@ name: Deploy to AWS EC2
 on:
   push:
     branches:
-      - main  # Run this when you push to main branch
+      - main
 
 jobs:
   build-and-deploy:
@@ -13,23 +13,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
       - name: Install dependencies
         run: npm install
-
-      - name: Build project
-        run: NODE_OPTIONS=--openssl-legacy-provider 
 
       - name: Lint code
         run: npm run lint --if-present
 
       - name: Build project
-        run: CI=false npm run build
-
+        run: CI=false NODE_OPTIONS=--openssl-legacy-provider npm run build
 
       - name: Deploy to EC2
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          HOST: 3.131.160.25      # <-- Replace with your EC2 Public IP
+          HOST: 3.131.160.25
           USER: ubuntu
         run: |
           echo "$SSH_PRIVATE_KEY" > key.pem
