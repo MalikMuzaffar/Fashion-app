@@ -33,7 +33,7 @@ jobs:
           HOST: 3.131.160.25
           USER: ubuntu
         run: |
-          echo "$SSH_PRIVATE_KEY" > key.pem
+          echo "SSH_PRIVATE_KEY" > key.pem
           chmod 600 key.pem
           # Create .ssh folder
           mkdir -p ~/.ssh
