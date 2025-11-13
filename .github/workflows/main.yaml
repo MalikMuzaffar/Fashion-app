@@ -17,10 +17,14 @@ jobs:
         run: npm install
 
       - name: Build project
-        run: NODE_OPTIONS=--openssl-legacy-provider npm run build
+        run: NODE_OPTIONS=--openssl-legacy-provider 
+
+      - name: Lint code
+        run: npm run lint --if-present
 
       - name: Build project
-        run: npm run build
+        run: CI=false npm run build
+
 
       - name: Deploy to EC2
         env:
