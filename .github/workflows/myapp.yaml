@@ -35,5 +35,9 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > key.pem
           chmod 600 key.pem
+          # Add EC2 host to known_hosts
+          ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
+          # Copy build files
           scp -i key.pem -r ./build $USER@$HOST:/var/www/myapp
+          # Restart nginx
           ssh -i key.pem $USER@$HOST "sudo systemctl restart nginx"
